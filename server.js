@@ -110,11 +110,23 @@ const AuthorType = new GraphQLObjectType({
                 name: { type: GraphQLNonNull(GraphQLString)}, 
                 authorId: { type: GraphQLNonNull(GraphQLInt)}
             },
-            resolve: (parents, args) => {
+            resolve: (parent, args) => {
                 const book = { id: books.length + 1, name: args.name, 
                     authorId: args.authorId}
                 books.push(book)
                 return book
+            }
+        },
+        addAuthor: {
+            type: AuthorType,
+            description: 'Adding an author',
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString)}, 
+            },
+            resolve: (parent, args) => {
+                const author = { id: authors.length + 1, name: args.name }
+                books.push(author)
+                return author
             }
         }
     })
