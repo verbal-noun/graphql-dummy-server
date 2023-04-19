@@ -47,6 +47,7 @@ const BookType = new GraphQLObjectType({
     })
 })
 
+// The Author Object type which supports querying for the author
 const AuthorType = new GraphQLObjectType({
     name: "Author",
     description: "This represnts an Author",
@@ -68,6 +69,14 @@ const AuthorType = new GraphQLObjectType({
     name: 'Query',
     description: "Root query",
     fields: () => ({
+        book: {
+            type: BookType,
+            description: 'A single book',
+            args: {
+                id: {type: GraphQLInt}
+            },
+            resolve: (parent, args) => books.find(book => book.id === args.id) 
+        },
         books: {
             type: new GraphQLList(BookType),
             description: 'List of all books',
@@ -77,7 +86,15 @@ const AuthorType = new GraphQLObjectType({
             type: new GraphQLList(AuthorType),
             description: 'List of all authors',
             resolve: () => authors
-        }
+        },
+        author: {
+            type: AuthorType,
+            description: 'A single author',
+            args: {
+                id: {type: GraphQLInt}
+            },
+            resolve: (parent, args) => authors.find(author => author.id === args.id) 
+        },
     })
  })
 
